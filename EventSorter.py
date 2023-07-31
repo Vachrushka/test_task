@@ -11,6 +11,15 @@ def get_full_path(file_path):
     return Path(os.path.abspath(file_path))
 
 
+def main():
+    reader = JsonReader(input_file, output_file)
+    reader.load_json_data()
+
+    reader.group_by_time_events()
+    reader.group_by_time_events_dict()
+    reader.write_groups_data()
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Event sorting and grouping program')
 
@@ -44,13 +53,4 @@ if __name__ == "__main__":
             print('File "{0}" does not exist'.format(input_file))
             exit(1)
 
-        reader = JsonReader(input_file, output_file)
-        reader.load_json_data()
-        #reader.list_events.print_events_info()
-        #reader.list_events.delete_type_other()
-        #reader.list_events.close_data_sort()
-
-        reader.group_by_time_events()
-        reader.write_groups_data()
-
-        #reader.write_json_data()  # сериализация листа событий
+        main()

@@ -2,12 +2,7 @@
   {
     "event_time": "2021-02-24T00:00:00",
     "event_type": "private",
-    "event_name": [
-      "n",
-      "a",
-      "m",
-      "e"
-    ],
+    "event_name": "12",
     "event_members": [
       "Alice",
       "Bob",

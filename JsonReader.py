@@ -1,7 +1,7 @@
 import json
 import re
 from datetime import datetime, date, timezone
-
+from collections import defaultdict
 from Event import EventList, Event, EventGroup
 from EventTypes import EventType
 
@@ -141,6 +141,20 @@ class JsonReader:
             group.events_list.close_time_sort()
 
         self.list_groups = group_list
+
+    def group_by_time_events_dict(self):
+        if not self.list_events.events:
+            return
+
+        self.list_events.delete_type_other()
+        self.list_events.close_data_sort()
+
+        group_dict = defaultdict(list)
+        for event in self.list_events.events:
+            group_dict[event.event_time.date()].append(event)
+
+        print(group_dict)
+        #self.list_groups = group_dict
 
 
     def write_groups_data(self):
