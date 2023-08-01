@@ -1,7 +1,7 @@
 from datetime import datetime
 import pytest
 from Factory import EventFactory
-from JsonReader import JsonReader
+from DataManager import DataManager
 
 
 @pytest.fixture(scope="module")
@@ -15,7 +15,7 @@ def test_create_right_json():
 def test_check_load(test_create_right_json):
     # создание объекта для тестирования
     ef = test_create_right_json
-    reader = JsonReader(ef.input_path, None)
+    reader = DataManager(ef.input_path, None)
     reader.load_json_data()
 
     yield ef, reader
@@ -59,11 +59,11 @@ def test_is_right_range(test_check_load):
     (datetime(2021, 2, 24), "private",  "123456789012345678901"),
     (datetime(2021, 2, 24), "private",  "12345678901234567890 123456789012345678901"),
     (datetime(2021, 2, 24), "private",  "12345 "*20),
-    (datetime(2021, 2, 24), "private",  ""),
+    (datetime(2021, 2, 24), "private",  ['n', 'a', 'm', 'e']),
     (datetime(2021, 2, 24), "private",  None),
     (datetime(2021, 2, 24), "private",  "$"),
     (datetime(2021, 2, 24), "private",  "="),
-    (datetime(2021, 2, 24), "private",  ['n', 'a', 'm', 'e']),
+    (datetime(2021, 2, 24), "private",  ""),
 ])
 @pytest.mark.bad_data_test
 def test_bad_json_data(event_time, event_type, event_name):
@@ -71,6 +71,6 @@ def test_bad_json_data(event_time, event_type, event_name):
     ev_list = ef.generate_event_from_data(event_time, event_type, event_name)
     ef.generate_json(event=ev_list)
 
-    reader = JsonReader(ef.input_path, None)
+    reader = DataManager(ef.input_path, None)
     with pytest.raises(ValueError):
         reader.load_json_data()

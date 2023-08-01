@@ -6,7 +6,7 @@ from EventTypes import EventType
 from Validator import ValidEvent
 
 
-class JsonReader:
+class DataManager:
     def __init__(self, inputFile, outputFile):
         self.inputFilePath = inputFile
         self.outputFilePath = outputFile
@@ -52,6 +52,12 @@ class JsonReader:
         # сериализация по группам
         serialized_data = {key.isoformat(): value for key, value in self.dict_groups.items()}
         json_data = json.dumps(serialized_data, default=self.no_serializable_to_str, indent=2)
+        with open(self.outputFilePath, "w") as file:
+            file.write(json_data)
+
+    def write_json_data(self):
+        # сериализация сортированного листа событий
+        json_data = json.dumps(self.list_events.events, default=self.no_serializable_to_str, indent=2)
         with open(self.outputFilePath, "w") as file:
             file.write(json_data)
 

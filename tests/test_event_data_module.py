@@ -2,13 +2,12 @@ from datetime import datetime
 import pytest
 from Factory import EventFactory
 from EventTypes import EventType
-from JsonReader import JsonReader
+from DataManager import DataManager
 
 
 # глобальные фикстуры
 @pytest.fixture(scope="module")
 def global_resource():
-
     ev = EventFactory(datetime(2023, 7, 26), datetime(2023, 7, 28))
     event_list = ev.generate_events_list(200)
 
@@ -37,11 +36,11 @@ def check_other_event(global_resource):
 @pytest.fixture(scope="function")
 def test_grouping(global_resource):
     # создание объекта для тестирования
-    reader = JsonReader(None, None)
-    reader.list_events = global_resource
-    reader.group_by_time_events()
+    manager = DataManager(None, None)
+    manager.list_events = global_resource
+    manager.group_by_time_events()
 
-    yield reader
+    yield manager
 
 
 @pytest.mark.no_json_test
@@ -73,3 +72,14 @@ def test_groups_check_time_between_events(test_grouping):
     for event_list in test_grouping.dict_groups.values():
         for i in range(len(event_list) - 1):
             assert event_list[i].event_time < event_list[i + 1].event_time
+
+
+@pytest.mark.parametrize("input_data", "output_data", [(1,2),(1,2),(1,2)], indirect=True)
+@pytest.fixture(scope="function")
+def test_input_output(input_data, output_data):
+    # создание объекта для тестирования
+    manager = DataManager(None, None)
+    manager.list_events = global_resource
+    manager.group_by_time_events()
+
+    yield manager

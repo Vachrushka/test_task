@@ -2,11 +2,11 @@ import os
 
 from EventTypes import EventType
 from Event import Event, EventList
-from datetime import timedelta, timezone, datetime
+from datetime import timedelta, datetime
 import random
 import string
 import pytz
-from JsonReader import JsonReader
+from DataManager import DataManager
 
 
 class EventFactory:
@@ -32,15 +32,8 @@ class EventFactory:
 
     def generate_random_event_time_zone(self, time):
         # Генерируем случайный часовой пояс
-        iso_types = [1]
-        selected_type = random.choice(iso_types)
-        if selected_type == 0:
-            # время по гринвичу (Z)
-            time = time.replace(tzinfo=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-        else:
-            # время c сдвигом поясов
-            random_timezone = random.choice(pytz.all_timezones)
-            time = pytz.timezone(random_timezone).localize(time).isoformat()
+        random_timezone = random.choice(pytz.all_timezones)
+        time = pytz.timezone(random_timezone).localize(time).isoformat()
         return datetime.fromisoformat(time)
 
     def generate_random_event_time(self):
@@ -51,9 +44,9 @@ class EventFactory:
 
         return self.generate_random_event_time_zone(random_event_time)
 
-    def generate_random_event(self):
+    def generate_event(self, date):
         # Генерируем случайное событие
-        event_time = self.generate_random_event_time()
+        event_time = date
         event_name = self.generate_random_string(random.randint(1, 20))
         event_type = self.generate_random_event_type()
         event_loc = self.generate_random_event_loc()
@@ -63,17 +56,17 @@ class EventFactory:
         # Генерируем список случайных событий
         events_list = EventList([])
         for _ in range(num_events):
-            event = self.generate_random_event()
+            event = self.generate_event(self.generate_random_event_time())
             events_list.events.append(event)
         return events_list
 
     def generate_json(self, count_events=50, event=None):
-        json_reader = JsonReader(None, self.input_path)
+        manager = DataManager(None, self.input_path)
         if event is None:
-            json_reader.list_events = self.generate_events_list(count_events)
+            manager.list_events = self.generate_events_list(count_events)
         else:
-            json_reader.list_events = EventList([event])
-        json_reader.write_json_data()
+            manager.list_events = EventList([event])
+        manager.write_json_data()
 
     def generate_event_from_data(self, ev_time, ev_type, ev_name):
         event_loc = self.generate_random_event_loc()

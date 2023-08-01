@@ -1,6 +1,6 @@
 import argparse
 from pathlib import Path
-from JsonReader import JsonReader
+from DataManager import DataManager
 
 
 def parse_arguments():
@@ -13,11 +13,11 @@ def parse_arguments():
 
 
 def main(input_path, output_path):
-    reader = JsonReader(input_path, output_path)
-    reader.load_json_data()
+    manager = DataManager(input_path, output_path)
+    manager.load_json_data()
 
-    reader.group_by_time_events()
-    reader.write_groups_data()
+    manager.group_by_time_events()
+    manager.write_groups_data()
 
 
 if __name__ == "__main__":
