@@ -22,7 +22,6 @@ class JsonReader:
         self.inputFilePath = inputFile
         self.outputFilePath = outputFile
         self.list_events = EventList([])
-        self.list_groups = []
         self.dict_groups = {}
 
     def load_json_data(self):
@@ -46,33 +45,6 @@ class JsonReader:
 
 
     def group_by_time_events(self):
-        if self.list_events.events is None or len(self.list_events.events) == 0:
-            return
-        self.list_events.delete_type_other()
-        self.list_events.close_data_sort()
-
-        group_list = []
-        group_date = self.list_events.events[0].event_time.date()
-        group_list_temp = EventList([])
-        for event in self.list_events.events:
-            if group_date == event.event_time.date():
-                group_list_temp.events.append(event)
-            else:
-                # создание группы со старой датой
-                group_list.append(EventGroup(group_date, group_list_temp))
-
-                group_date = event.event_time.date()
-                group_list_temp = EventList([])
-                group_list_temp.events.append(event)
-
-        group_list.append(EventGroup(group_date, group_list_temp))
-
-        for group in group_list:
-            group.events_list.close_time_sort()
-
-        self.list_groups = group_list
-
-    def group_by_time_events_dict(self):
         if not self.list_events.events:
             return
 

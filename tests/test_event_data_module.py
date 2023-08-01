@@ -49,7 +49,7 @@ def test_grouping(global_resource):
 @pytest.mark.no_json_test
 def test_groups_created(test_grouping):
     # проверка наличия групп
-    assert len(test_grouping.list_groups) > 0
+    assert len(test_grouping.dict_groups) > 0
 
 
 @pytest.mark.no_json_test

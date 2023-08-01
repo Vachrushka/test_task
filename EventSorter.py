@@ -16,7 +16,7 @@ def main(input_path, output_path):
     reader = JsonReader(input_path, output_path)
     reader.load_json_data()
 
-    reader.group_by_time_events_dict()
+    reader.group_by_time_events()
     reader.write_groups_data()
 
 
