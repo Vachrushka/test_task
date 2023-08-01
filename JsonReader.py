@@ -1,5 +1,5 @@
 import json
-from datetime import datetime, date
+from datetime import datetime
 from collections import defaultdict
 from Event import EventList, Event, EventGroup
 from EventTypes import EventType
@@ -7,34 +7,31 @@ from Validator import ValidEvent
 
 
 def no_serializable_to_str(obj):
-    if isinstance(obj, datetime):
-        return obj.isoformat()
-    elif isinstance(obj, date):
+    if isinstance(obj, defaultdict):
+        return dict(obj)
+    elif isinstance(obj, datetime):
         return obj.isoformat()
     elif isinstance(obj, EventType):
         return str(obj)
-    elif isinstance(obj, EventList):
-        serialized_list = [event.__dict__ for event in obj.events]
-        return serialized_list
+    elif isinstance(obj, Event):
+        return obj.to_json()
 
 
 class JsonReader:
     def __init__(self, inputFile, outputFile):
         self.inputFilePath = inputFile
         self.outputFilePath = outputFile
-        # print(inputFile, outputFile)
-
         self.list_events = EventList([])
         self.list_groups = []
+        self.dict_groups = {}
 
     def load_json_data(self):
         # считывание
         with open(self.inputFilePath, "r") as json_file:
             json_data = json.load(json_file)
 
-        validator = ValidEvent()
-
         # валидация данных
+        validator = ValidEvent()
         validator.check_json_is_list(json_data)
 
         for event in json_data:
@@ -46,7 +43,6 @@ class JsonReader:
                               event["event_members"],
                               event["event_place"])
             self.list_events.events.append(new_event)
-
 
 
     def group_by_time_events(self):
@@ -87,15 +83,13 @@ class JsonReader:
         for event in self.list_events.events:
             group_dict[event.event_time.date()].append(event)
 
-        print(group_dict)
-        # self.list_groups = group_dict
+        self.dict_groups = group_dict
 
     def write_groups_data(self):
         # сериализация по группам
-        serialized_list = [groups.__dict__ for groups in self.list_groups]
-        # print(serialized_list)
-        json_data = json.dumps(serialized_list, default=no_serializable_to_str, indent=2)
-        # print(json_data)
+        serialized_data = {key.isoformat(): value for key, value in self.dict_groups.items()}
+        print(serialized_data)
+        json_data = json.dumps(serialized_data, default=no_serializable_to_str, indent=2)
         with open(self.outputFilePath, "w") as file:
             file.write(json_data)
 

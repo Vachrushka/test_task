@@ -36,6 +36,9 @@ class Event:
         return str(self.event_time) + " " + str(self.event_type) + " " + str(self.event_name) + " " + \
                str(self.event_members) + " " + self.event_place
 
+    def to_json(self):
+        return self.__dict__
+
 
 class EventGroup:
     def __init__(self, time: datetime, events: EventList):

@@ -3,12 +3,6 @@ from pathlib import Path
 from JsonReader import JsonReader
 
 
-def get_full_path(file_path):
-    if file_path:
-        return Path(file_path)
-    return None
-
-
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Event sorting and grouping program')
     parser.add_argument('-i', '--input', type=str, default="data/input.json",
@@ -22,7 +16,6 @@ def main(input_path, output_path):
     reader = JsonReader(input_path, output_path)
     reader.load_json_data()
 
-    reader.group_by_time_events()
     reader.group_by_time_events_dict()
     reader.write_groups_data()
 
@@ -30,8 +23,8 @@ def main(input_path, output_path):
 if __name__ == "__main__":
     args = parse_arguments()
 
-    input_file = get_full_path(args.input)
-    output_file = get_full_path(args.output)
+    input_file = Path(args.input)
+    output_file = Path(args.output)
 
     if not input_file.exists():
         print('File "{0}" does not exist'.format(input_file))
