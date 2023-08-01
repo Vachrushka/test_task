@@ -1,7 +1,13 @@
 import argparse
+import os
+import sys
 from pathlib import Path
 from DataManager import DataManager
 
+def get_full_path(file_path):
+    if file_path is None:
+        return None
+    return Path(os.path.abspath(file_path))
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Event sorting and grouping program')

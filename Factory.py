@@ -1,5 +1,4 @@
 import os
-
 from EventTypes import EventType
 from Event import Event, EventList
 from datetime import timedelta, datetime
@@ -44,7 +43,7 @@ class EventFactory:
 
         return self.generate_random_event_time_zone(random_event_time)
 
-    def generate_event(self, date):
+    def generate_random_event(self, date):
         # Генерируем случайное событие
         event_time = date
         event_name = self.generate_random_string(random.randint(1, 20))
@@ -52,11 +51,31 @@ class EventFactory:
         event_loc = self.generate_random_event_loc()
         return Event(event_time, event_type, event_name, ["Alice", "Bob", "Clara"], event_loc)
 
+    def generate_test_event(self, date):
+        # Генерируем тестовое событие
+
+        datetime_string_with_offset = date[0].strftime("%Y-%m-%dT%H:%M:%S") + self.format_offset(date[1])
+
+        return Event(datetime.fromisoformat(datetime_string_with_offset), EventType.PRIVATE, "1", ["1"], "1")
+
+    def format_offset(self, offset_minutes):
+        sign = '-' if offset_minutes < 0 else '+'
+        offset = abs(offset_minutes)
+        hours, minutes = divmod(offset, 60)
+        return f"{sign}{hours:02d}:{minutes:02d}"
+
+    def generate_test_event_list(self, dates):
+        events_list = EventList([])
+        for date in dates:
+            event = self.generate_test_event(date)
+            events_list.events.append(event)
+        return events_list
+
     def generate_events_list(self, num_events):
         # Генерируем список случайных событий
         events_list = EventList([])
         for _ in range(num_events):
-            event = self.generate_event(self.generate_random_event_time())
+            event = self.generate_random_event(self.generate_random_event_time())
             events_list.events.append(event)
         return events_list
 
