@@ -43,8 +43,6 @@ def test_grouping(global_resource):
 
     yield reader
 
-    reader = None
-
 
 @pytest.mark.no_json_test
 def test_groups_created(test_grouping):
@@ -55,21 +53,23 @@ def test_groups_created(test_grouping):
 @pytest.mark.no_json_test
 def test_groups_check_time_between_groups(test_grouping):
     # проверка наличия порядка времени между групп
-    for i in range(len(test_grouping.list_groups) - 1):
-        assert test_grouping.list_groups[i].events_time < test_grouping.list_groups[i + 1].events_time
+    date_list = list(test_grouping.dict_groups.keys())
+
+    for i in range(len(date_list) - 1):
+        assert date_list[i] < date_list[i + 1]
 
 
 @pytest.mark.no_json_test
 def test_groups_check_time_between_group_and_events(test_grouping):
     # проверка наличия соответствия даты группы и событий группы
-    for group in test_grouping.list_groups:
-        for event in group.events_list.events:
-            assert group.events_time == event.event_time.date()
+    for date, event_list in test_grouping.dict_groups.items():
+        for event in event_list:
+            assert date == event.event_time.date()
 
 
 @pytest.mark.no_json_test
 def test_groups_check_time_between_events(test_grouping):
     # проверка наличия соответствия сортировки событий внутри групп
-    for group in test_grouping.list_groups:
-        for i in range(len(group.events_list.events) - 1):
-            assert group.events_list.events[i].event_time < group.events_list.events[i + 1].event_time
+    for event_list in test_grouping.dict_groups.values():
+        for i in range(len(event_list) - 1):
+            assert event_list[i].event_time < event_list[i + 1].event_time

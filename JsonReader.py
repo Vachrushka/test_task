@@ -1,20 +1,9 @@
 import json
 from datetime import datetime
 from collections import defaultdict
-from Event import EventList, Event, EventGroup
+from Event import EventList, Event
 from EventTypes import EventType
 from Validator import ValidEvent
-
-
-def no_serializable_to_str(obj):
-    if isinstance(obj, defaultdict):
-        return dict(obj)
-    elif isinstance(obj, datetime):
-        return obj.isoformat()
-    elif isinstance(obj, EventType):
-        return str(obj)
-    elif isinstance(obj, Event):
-        return obj.to_json()
 
 
 class JsonReader:
@@ -43,7 +32,6 @@ class JsonReader:
                               event["event_place"])
             self.list_events.events.append(new_event)
 
-
     def group_by_time_events(self):
         if not self.list_events.events:
             return
@@ -55,21 +43,24 @@ class JsonReader:
         for event in self.list_events.events:
             group_dict[event.event_time.date()].append(event)
 
+        for key, event_list in group_dict.items():
+            group_dict[key] = EventList(event_list).close_time_sort()
+
         self.dict_groups = group_dict
 
     def write_groups_data(self):
         # сериализация по группам
         serialized_data = {key.isoformat(): value for key, value in self.dict_groups.items()}
-        print(serialized_data)
-        json_data = json.dumps(serialized_data, default=no_serializable_to_str, indent=2)
+        json_data = json.dumps(serialized_data, default=self.no_serializable_to_str, indent=2)
         with open(self.outputFilePath, "w") as file:
             file.write(json_data)
 
-    def write_json_data(self):
-        # сериализация сортированного листа событий
-        serialized_list = [event.__dict__ for event in self.list_events.events]
-        json_data = json.dumps(serialized_list, default=no_serializable_to_str, indent=2)
-
-        # print(self.outputFilePath)
-        with open(self.outputFilePath, "w") as file:
-            file.write(json_data)
+    def no_serializable_to_str(self, obj):
+        if isinstance(obj, defaultdict):
+            return dict(obj)
+        elif isinstance(obj, datetime):
+            return obj.isoformat()
+        elif isinstance(obj, EventType):
+            return str(obj)
+        elif isinstance(obj, Event):
+            return obj.to_json()

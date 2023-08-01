@@ -17,10 +17,14 @@ class EventList:
     def close_time_sort(self):
         # сортировка по времени проведения
         self.events = sorted(self.events, key=lambda x: x.event_time)
+        return self.events
 
     def delete_type_other(self):
         # удаление событий типа other
         self.events = [event for event in self.events if event.event_type != EventType.OTHER]
+
+    def to_json(self):
+        return self.__dict__
 
 
 class Event:
@@ -40,13 +44,3 @@ class Event:
         return self.__dict__
 
 
-class EventGroup:
-    def __init__(self, time: datetime, events: EventList):
-        self.events_time = time
-        self.events_list = events
-
-    def __str__(self):
-        return str(self.events_time)
-
-    def __repr__(self):
-        return str(self.events_time) + " group count: " + str(len(self.events_list.events))
