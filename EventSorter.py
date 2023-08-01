@@ -11,8 +11,10 @@ def get_full_path(file_path):
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Event sorting and grouping program')
-    parser.add_argument('-i', '--input', type=str, default="data/input.json", help='Input file (json format), default: data/input.json')
-    parser.add_argument('-o', '--output', type=str, default="data/output.json", help='Output file (json format), default: data/output.json')
+    parser.add_argument('-i', '--input', type=str, default="data/input.json",
+                        help='Input file (json format), default: data/input.json')
+    parser.add_argument('-o', '--output', type=str, default="data/output.json",
+                        help='Output file (json format), default: data/output.json')
     return parser.parse_args()
 
 

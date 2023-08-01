@@ -1,11 +1,11 @@
-from enum import Enum
+from enum import Enum, auto
 
 
 class EventType(Enum):
-    PRIVATE = 1
-    MEETING = 2
-    CORPORATE = 3
-    OTHER = 4
+    PRIVATE = auto()
+    MEETING = auto()
+    CORPORATE = auto()
+    OTHER = auto()
 
     def __str__(self):
         return self.name.lower()

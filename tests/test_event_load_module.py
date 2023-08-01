@@ -1,6 +1,6 @@
 from datetime import datetime
 import pytest
-from EventFactory import EventFactory
+from Factory import EventFactory
 from JsonReader import JsonReader
 
 
