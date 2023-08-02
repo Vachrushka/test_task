@@ -1,5 +1,5 @@
 import json
-from datetime import datetime, date
+from datetime import datetime
 from collections import defaultdict
 from Event import EventList, Event
 from EventTypes import EventType
