@@ -1,8 +1,8 @@
 import argparse
 import os
-import sys
 from pathlib import Path
-from JsonReader import JsonReader
+
+from DataManager import DataManager
 
 
 def get_full_path(file_path):
@@ -11,46 +11,31 @@ def get_full_path(file_path):
     return Path(os.path.abspath(file_path))
 
 
-if __name__ == "__main__":
+def parse_arguments():
     parser = argparse.ArgumentParser(description='Event sorting and grouping program')
+    parser.add_argument('-i', '--input', type=str, default="data/input.json",
+                        help='Input file (json format), default: data/input.json')
+    parser.add_argument('-o', '--output', type=str, default="data/output.json",
+                        help='Output file (json format), default: data/output.json')
+    return parser.parse_args()
 
-    subparsers = parser.add_subparsers(dest="command")
-    parser.add_argument('-i', '--input', type=str, help='Input file (json format), default: input.json')
-    parser.add_argument('-o', '--output', type=str, help='Output file (json format), default: output.json')
 
-    args = parser.parse_args()
+def main(input_path, output_path):
+    manager = DataManager(input_path, output_path)
+    manager.load_json_data()
 
-    if args.command == "help":
-        parser.print_help()
+    manager.group_by_time_events()
+    manager.write_groups_data()
+
+
+if __name__ == "__main__":
+    args = parse_arguments()
+
+    input_file = Path(args.input)
+    output_file = Path(args.output)
+
+    if not input_file.exists():
+        print('File "{0}" does not exist'.format(input_file))
         exit(1)
-    else:
-        script_path = os.path.abspath(__file__)
-        script_directory = os.path.dirname(script_path)
-        default_input_path = Path(script_directory + "/data/input.json")  # значения по умолчанию
-        default_output_path = Path(script_directory + "/data/output.json")
 
-        input_file = get_full_path(args.input)
-        output_file = get_full_path(args.output)
-        #input_file = Path("/data/input.json")
-        if output_file is None:  # подготовка выходного файла
-            output_file = default_output_path
-
-        if input_file is None and not default_input_path.exists():   # проверка наличия входных файлов
-            print('Argument "--input" not passed and default file "/data/input.json" does not exist')
-            exit(1)
-        elif input_file is None:
-            input_file = default_input_path
-        elif not input_file.exists():
-            print('File "{0}" does not exist'.format(input_file))
-            exit(1)
-
-        reader = JsonReader(input_file, output_file)
-        reader.load_json_data()
-        #reader.list_events.print_events_info()
-        #reader.list_events.delete_type_other()
-        #reader.list_events.close_data_sort()
-
-        reader.group_by_time_events()
-        reader.write_groups_data()
-
-        #reader.write_json_data()  # сериализация листа событий
+    main(input_file, output_file)

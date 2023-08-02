@@ -1,0 +1,122 @@
+{
+  "2023-07-24": [
+    {
+      "event_time": "2023-07-24T23:00:00+08:00",
+      "event_type": "private",
+      "event_name": "2eLmf7yrQNwr",
+      "event_members": [
+        "Alice",
+        "Bob",
+        "Clara"
+      ],
+      "event_place": "telegram"
+    }
+  ],
+  "2023-07-25": [
+    {
+      "event_time": "2023-07-25T01:00:00-05:00",
+      "event_type": "private",
+      "event_name": "xAL2Mu",
+      "event_members": [
+        "Alice",
+        "Bob",
+        "Clara"
+      ],
+      "event_place": "zoom"
+    },
+    {
+      "event_time": "2023-07-25T01:00:00-08:00",
+      "event_type": "corporate",
+      "event_name": "D2jel",
+      "event_members": [
+        "Alice",
+        "Bob",
+        "Clara"
+      ],
+      "event_place": "telemost"
+    }
+  ],
+  "2023-07-26": [
+    {
+      "event_time": "2023-07-26T23:00:00+08:00",
+      "event_type": "corporate",
+      "event_name": "D2jel",
+      "event_members": [
+        "Alice",
+        "Bob",
+        "Clara"
+      ],
+      "event_place": "telemost"
+    }
+  ],
+  "2023-07-29": [
+    {
+      "event_time": "2023-07-29T11:00:00+05:00",
+      "event_type": "meeting",
+      "event_name": "JZhEGwrB",
+      "event_members": [
+        "Alice",
+        "Bob",
+        "Clara"
+      ],
+      "event_place": "zoom"
+    },
+    {
+      "event_time": "2023-07-29T17:00:00+02:00",
+      "event_type": "corporate",
+      "event_name": "3yTEn aM",
+      "event_members": [
+        "Alice",
+        "Bob",
+        "Clara"
+      ],
+      "event_place": "discord"
+    }
+  ],
+  "2023-07-30": [
+    {
+      "event_time": "2023-07-30T11:00:00+03:00",
+      "event_type": "private",
+      "event_name": "gwku0",
+      "event_members": [
+        "Alice",
+        "Bob",
+        "Clara"
+      ],
+      "event_place": "OxaobJ"
+    },
+    {
+      "event_time": "2023-07-30T13:00:00+04:00",
+      "event_type": "corporate",
+      "event_name": "HX7aqfUA1MZYHIGgym63",
+      "event_members": [
+        "Alice",
+        "Bob",
+        "Clara"
+      ],
+      "event_place": "zoom"
+    },
+    {
+      "event_time": "2023-07-30T12:00:00-02:00",
+      "event_type": "corporate",
+      "event_name": "HX7aqfUA1MZYHIGgym63",
+      "event_members": [
+        "Alice",
+        "Bob",
+        "Clara"
+      ],
+      "event_place": "zoom"
+    },
+    {
+      "event_time": "2023-07-30T12:00:00-02:00",
+      "event_type": "corporate",
+      "event_name": "HX7qfUA1MsZYHIGgym63",
+      "event_members": [
+        "Alice",
+        "Bob",
+        "Clara"
+      ],
+      "event_place": "zoom"
+    }
+  ]
+}
